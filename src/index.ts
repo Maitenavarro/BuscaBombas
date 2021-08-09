@@ -1,38 +1,103 @@
 import {MineSweeper} from './MineSweeper/BuscaMinas';
 import {MineRandomizer} from './MineSweeper/MineRandomizer';
-import {MineGridCreator} from "./MineSweeper/MinesGridCreator";
-import {MinePositionCollection} from "./MineSweeper/MinePositions";
 
 const minePositionGenerator = new MineRandomizer()
-const minesweeper = new MineSweeper(minePositionGenerator, 10, 5);
-console.log(minesweeper.getBoard())
+const minesweeper = new MineSweeper(minePositionGenerator, 5, 5);
+
 const board = document.getElementById("tablero")
-const minePosition = new MinePositionCollection()
-const grid = new MineGridCreator(minePosition,5).getGrid()
+
 
 board.innerHTML = ""
 document.oncontextmenu = function () {
     return false
 }
-grid.forEach(row => {
-        row.forEach(column => {
+
+const htmlBoard = [];
+minesweeper.getBoard().forEach((row, y) => {
+        const column = [];
+        row.forEach((value, x) => {
                 const slot = document.createElement("div")
                 slot.classList.add("casilla")
                 board.append(slot)
+                column.push(slot);
                 slot.addEventListener("click", () => {
-                    slot.classList.add("open")
-                    if (minePosition.hasMine(column[0][0], row[0][0])) {
-                        slot.classList.add("bomba")
-                    }
-                    if(minePosition.nearbyMines(column[0][0], row[0][0]) === 0){
-                        slot.classList.add("empty")
-                    }
+                    minesweeper.openSlot(y, x);
+                    updateBoard()
                 })
-                slot.addEventListener("auxclick", () => {
-                    slot.classList.add("bandera")
+                slot.addEventListener("contextmenu", () => {
+                    minesweeper.toggleFlag(y, x);
+                    updateBoard();
                 })
             }
         )
+        htmlBoard.push(column);
     }
 )
 
+function updateBoard() {
+    minesweeper.getBoard().forEach((row, y) => {
+        row.forEach((value, x) => {
+            assignClass(value, htmlBoard[y][x])
+        })
+    })
+}
+
+function assignClass(value: string, slot: HTMLElement) {
+    let classToAssign = 'casilla';
+    switch (value) {
+        case 'f': {
+            classToAssign += " bandera";
+            break;
+        }
+        case '': {
+
+            break;
+        }
+        case '#': {
+            classToAssign += ' open bandera';
+            break;
+        }
+        case "*": {
+            classToAssign += ' open bomba'
+            break
+        }
+        case "0": {
+            classToAssign += ' open empty';
+            break;
+        }
+        case "1": {
+            classToAssign += ' open one';
+            break
+        }
+        case "2": {
+            classToAssign += ' open two';
+            break
+        }
+        case "3": {
+            classToAssign += ' open three';
+            break
+        }
+        case "4": {
+            classToAssign += ' open four';
+            break
+        }
+        case "5": {
+            classToAssign += ' open five';
+            break
+        }
+        case "6": {
+            classToAssign += ' open six';
+            break
+        }
+        case "7": {
+            classToAssign += ' open seven';
+            break
+        }
+        case "8": {
+            classToAssign += ' open eight';
+            break
+        }
+    }
+
+    slot.className = classToAssign;
+}
