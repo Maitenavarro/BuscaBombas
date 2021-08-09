@@ -5,6 +5,7 @@ import {MinePositionCollection} from "./MineSweeper/MinePositions";
 
 const minePositionGenerator = new MineRandomizer()
 const minesweeper = new MineSweeper(minePositionGenerator, 10, 5);
+console.log(minesweeper.getBoard())
 const board = document.getElementById("tablero")
 const minePosition = new MinePositionCollection()
 const grid = new MineGridCreator(minePosition,5).getGrid()

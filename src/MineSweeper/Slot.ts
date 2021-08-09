@@ -26,17 +26,17 @@ export class Slot {
     getContent(): string {
         if (!this.isRevealed()) {
             if (this.isFlag()) {
-                return ' f ';
+                return 'f';
             }
-            return '   ';
+            return '';
         }
         if (this.tagState === TagStates.WRONGFLAG) {
-            return ' # '
+            return '#'
         }
         if (this.hasMine) {
-            return " * ";
+            return "*";
         }
-        return ' ' + this.value + ' ';
+        return this.value.toString();
     }
 
     isFlag(): boolean {
