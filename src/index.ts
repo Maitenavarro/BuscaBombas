@@ -6,7 +6,7 @@ const minesweeper = new MineSweeper(minePositionGenerator, 10, 5);
 console.log(minesweeper.getBoard())
 const board = document.getElementById("tablero")
 
-board.innerHTML = ""
+// board.innerHTML = ""
 document.oncontextmenu = function () {
     return false
 }
@@ -23,16 +23,19 @@ grid.forEach((row, rowIndex) => {
                     if (grid[rowIndex][columnIndex] === "*") {
                         slot.classList.add("open")
                         slot.classList.add("bomba")
+                        board.append(slot)
                     }
                     if (grid[rowIndex][columnIndex] === "") {
                         slot.classList.add("open")
                         slot.classList.add("empty")
+                        board.append(slot)
                     }
                 })
 
                 slot.addEventListener("auxclick", () => {
                     minesweeper.toggleFlag(rowIndex, columnIndex)
                     slot.classList.add("bandera")
+                    board.append(slot)
                 })
             }
         )
